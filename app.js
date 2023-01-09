@@ -2,7 +2,6 @@ require("dotenv").config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -21,9 +20,7 @@ const itemSchema = new mongoose.Schema({
 const Item = mongoose.model("Item", itemSchema);
 
 app.get("/", function (req, res) {
-  const day = date.getDate();
-
-  res.render("list", { listTitle: day, newListItems: items });
+  res.render("list", { listTitle: "Today", newListItems: items });
 });
 
 app.post("/", function (req, res) {
