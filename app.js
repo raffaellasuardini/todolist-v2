@@ -33,16 +33,28 @@ const eat = new Item({
 
 const defaultItems = [cook, makeBed, eat];
 
-Item.insertMany(defaultItems, function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Successfully insert items");
-  }
-});
-
 app.get("/", function (req, res) {
-  res.render("list", { listTitle: "Today", newListItems: items });
+  // show all items
+  Item.find({}, function (err, items) {
+    if (err) {
+      console.log(err);
+    } else {
+      // if items is empty insert default items
+      if (items.length === 0) {
+        Item.insertMany(defaultItems, function (err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Successfully insert items");
+          }
+        });
+        res.redirect("/");
+      } else {
+        mongoose.connection.close();
+        res.render("list", { listTitle: "Today", newListItems: items });
+      }
+    }
+  });
 });
 
 app.post("/", function (req, res) {
