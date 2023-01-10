@@ -19,6 +19,28 @@ const itemSchema = new mongoose.Schema({
 
 const Item = mongoose.model("Item", itemSchema);
 
+const cook = new Item({
+  name: "Cook fantastic dishes",
+});
+
+const makeBed = new Item({
+  name: "Don't remember to make your bed",
+});
+
+const eat = new Item({
+  name: "Don't forget to eat properly",
+});
+
+const defaultItems = [cook, makeBed, eat];
+
+Item.insertMany(defaultItems, function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Successfully insert items");
+  }
+});
+
 app.get("/", function (req, res) {
   res.render("list", { listTitle: "Today", newListItems: items });
 });
