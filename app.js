@@ -33,6 +33,13 @@ const eat = new Item({
 
 const defaultItems = [cook, makeBed, eat];
 
+const listSchema = {
+  name: String,
+  items: [itemSchema],
+};
+
+const List = mongoose.model("list", listSchema);
+
 app.get("/", function (req, res) {
   // show all items
   Item.find({}, function (err, items) {
@@ -51,6 +58,31 @@ app.get("/", function (req, res) {
         res.redirect("/");
       } else {
         res.render("list", { listTitle: "Today", newListItems: items });
+      }
+    }
+  });
+});
+
+app.get("/:customListName", function (req, res) {
+  const customListName = req.params.customListName;
+  List.findOne({ name: customListName }, function (err, foundList) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundList) {
+        // show an existing list
+        res.render("list", {
+          listTitle: foundList.name,
+          newListItems: foundList.items,
+        });
+      } else {
+        // create an new list
+        const list = new List({
+          name: customListName,
+          items: defaultItems,
+        });
+        list.save();
+        res.redirect("/" + customListName);
       }
     }
   });
@@ -79,10 +111,6 @@ app.post("/delete", function (req, res) {
       res.redirect("/");
     }
   });
-});
-
-app.get("/work", function (req, res) {
-  res.render("list", { listTitle: "Work List", newListItems: workItems });
 });
 
 app.get("/about", function (req, res) {
