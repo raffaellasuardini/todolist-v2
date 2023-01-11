@@ -50,7 +50,6 @@ app.get("/", function (req, res) {
         });
         res.redirect("/");
       } else {
-        mongoose.connection.close();
         res.render("list", { listTitle: "Today", newListItems: items });
       }
     }
