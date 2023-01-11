@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 const app = express();
 
@@ -64,7 +65,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/:customListName", function (req, res) {
-  const customListName = req.params.customListName;
+  const customListName = _.capitalize(req.params.customListName);
   List.findOne({ name: customListName }, function (err, foundList) {
     if (err) {
       console.log(err);
@@ -122,14 +123,14 @@ app.post("/delete", function (req, res) {
   const currentList = req.body.listName;
 
   if (currentList === "Today") {
-  Item.findByIdAndRemove(checkedItemId, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Succesfully deleted id item " + checkedItemId);
-      res.redirect("/");
-    }
-  });
+    Item.findByIdAndRemove(checkedItemId, function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Succesfully deleted id item " + checkedItemId);
+        res.redirect("/");
+      }
+    });
   } else {
     List.findOneAndUpdate(
       { name: currentList },
