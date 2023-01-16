@@ -1,0 +1,36 @@
+<%- include("header") -%>
+
+<div class="box" id="heading">
+  <h1>All List</h1>
+</div>
+<div class="box">
+  <% listItems.forEach(item => { if (item.name === "There's no list yet") { %>
+  <div class="item">
+    <p><%= item%></p>
+  </div>
+  <% } else {%>
+  <div class="item">
+    <p><a href="/<%= item.name%>"><%= item.name%></a></p>
+  </div>
+  <% }})%>
+</div>
+
+<% if (typeof errorMessage !== "undefined") { %>
+<p>List not created.</p>
+<p><%= errorMessage %></p>
+<% } %>
+
+<div class="box">
+  <form class="item" action="/" method="post">
+    <input
+      type="text"
+      name="newList"
+      placeholder="New List"
+      autocomplete="off"
+      required
+    />
+    <button type="submit" name="list">+</button>
+  </form>
+</div>
+
+<%- include("footer") -%>

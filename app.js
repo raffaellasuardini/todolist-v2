@@ -42,23 +42,12 @@ const listSchema = {
 const List = mongoose.model("list", listSchema);
 
 app.get("/", function (req, res) {
-  // show all items
-  Item.find({}, function (err, items) {
-    if (err) {
-      console.log(err);
+  List.find({}, function (err, allLists) {
+    if (!err) {
+      if (allLists.length === 0) {
+        res.render("index", { listItems: ["There's no list yet"] });
     } else {
-      // if items is empty insert default items
-      if (items.length === 0) {
-        Item.insertMany(defaultItems, function (err) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("Successfully insert items");
-          }
-        });
-        res.redirect("/");
-      } else {
-        res.render("list", { listTitle: "Today", newListItems: items });
+        res.render("index", { listItems: allLists });
       }
     }
   });
@@ -90,28 +79,24 @@ app.get("/:customListName", function (req, res) {
 });
 
 app.post("/", function (req, res) {
-  const itemName = req.body.newItem;
-  const listName = req.body.list;
+  const newListName = req.body.newList;
 
-  const item = new Item({
-    name: itemName,
+  List.findOne({ name: newListName }, function (err, justList) {
+    if (!err) {
+      // list already exist
+      if (justList) {
+        res.render("index", {
+          listItems: newListName,
+          errorMessage: "This List already exitst",
   });
-
-  // find where save new item
-  if (listName === "Today") {
-    item.save();
-    res.redirect("/");
   } else {
-    console.log(listName);
-    List.findOne({ name: listName }, function (err, foundList) {
-      if (err) {
-        console.log(err);
-      } else {
-        if (foundList) {
-          console.log(foundList);
-          foundList.items.push(item);
-          foundList.save();
-          res.redirect("/" + foundList.name);
+        // create new list called newListName
+        const list = new List({
+          name: _.capitalize(newListName),
+          items: defaultItems,
+        });
+        list.save();
+        res.redirect("/" + _.capitalize(newListName));
         }
       }
     });
