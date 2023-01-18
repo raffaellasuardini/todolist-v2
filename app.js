@@ -134,8 +134,18 @@ app.post("/delete", function (req, res) {
   }
 });
 
-app.get("/about", function (req, res) {
-  res.render("about");
+app.post("/delete/:thisIdList", function (req, res) {
+  const deleteListId = req.params.thisIdList;
+  const namedeleteList = req.body.deleteButton;
+  console.log(namedeleteList);
+  List.findOneAndRemove({ _id: deleteListId }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully delete this list " + namedeleteList);
+      res.redirect("/");
+    }
+  });
 });
 
 app.listen(3000, function () {

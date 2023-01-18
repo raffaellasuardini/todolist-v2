@@ -96,16 +96,15 @@ input[type="text"]:focus {
   padding-top: 6px;
 }
 
-.deleteLink {
+.deleteButton {
   color: white;
   background-color: #e38386;
-  display: block;
   border-radius: 5px;
   font-size: 30px;
   text-align: center;
   min-height: 50px;
-  text-decoration: none;
   padding-top: 6px;
+  width: 100%;
 }
 
 ::placeholder {
