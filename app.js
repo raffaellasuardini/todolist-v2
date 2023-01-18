@@ -113,6 +113,7 @@ app.post("/:listName", function (req, res) {
   const item = new Item({
     name: itemName,
   });
+  item.save();
   // find where save new Item
   List.findOne({ name: listName }, function (err, foundList) {
     if (err) {
