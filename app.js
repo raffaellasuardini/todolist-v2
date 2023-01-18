@@ -81,22 +81,27 @@ app.get("/:customListName", function (req, res) {
 app.post("/", function (req, res) {
   const newListName = req.body.newList;
 
-  List.findOne({ name: newListName }, function (err, justList) {
+  List.findOne({ name: newListName }, async function (err, justList) {
     if (!err) {
       // list already exist
       if (justList) {
+        List.find({}, function (errAll, allLists) {
+          if (!errAll) {
         res.render("index", {
-          listItems: newListName,
+              listTitle: newListName,
+              listItems: allLists,
           errorMessage: "This List already exitst",
   });
+          }
+        });
   } else {
         // create new list called newListName
         const list = new List({
-          name: _.capitalize(newListName),
+          name: newListName,
           items: defaultItems,
         });
-        list.save();
-        res.redirect("/" + _.capitalize(newListName));
+        await list.save();
+        res.redirect("/" + newListName);
         }
       }
     });
