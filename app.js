@@ -105,7 +105,22 @@ app.post("/", function (req, res) {
         }
       }
     });
+app.post("/:listName", function (req, res) {
+  const itemName = req.body.newItem;
+  const listName = req.body.list;
+  const item = new Item({
+    name: itemName,
+  });
+  // find where save new Item
+  List.findOne({ name: listName }, function (err, foundList) {
+    if (err) {
+      console.log(err);
+    } else {
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + foundList.name);
   }
+  });
 });
 
 app.post("/delete", function (req, res) {
