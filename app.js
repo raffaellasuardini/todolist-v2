@@ -53,15 +53,16 @@ app.get("/", function (req, res) {
   });
 });
 
-app.get("/:customListName", function (req, res) {
-  const customListName = _.capitalize(req.params.customListName);
-  List.findOne({ name: customListName }, function (err, foundList) {
+app.get("/:listName", function (req, res) {
+  const listName = req.params.listName;
+  List.findOne({ name: listName }, function (err, foundList) {
     if (err) {
       console.log(err);
     } else {
       if (foundList) {
         // show an existing list
         res.render("list", {
+          listId: foundList._id,
           listTitle: foundList.name,
           newListItems: foundList.items,
         });
