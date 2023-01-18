@@ -123,20 +123,18 @@ app.post("/:listName", function (req, res) {
   });
 });
 
-app.post("/delete", function (req, res) {
-  const checkedItemId = req.body.checkbox;
-  const currentList = req.body.listName;
+app.post("/delete/:listId/:itemId", function (req, res) {
+  const checkedItemId = req.params.itemId;
+  const currentList = req.params.listId;
 
-  if (currentList === "Today") {
     Item.findByIdAndRemove(checkedItemId, function (err) {
       if (err) {
         console.log(err);
       } else {
         console.log("Succesfully deleted id item " + checkedItemId);
-        res.redirect("/");
       }
     });
-  } else {
+
     List.findOneAndUpdate(
       { name: currentList },
       { $pull: { items: { _id: checkedItemId } } },
@@ -146,7 +144,6 @@ app.post("/delete", function (req, res) {
         }
       }
     );
-  }
 });
 
 app.post("/delete/:thisIdList", function (req, res) {
