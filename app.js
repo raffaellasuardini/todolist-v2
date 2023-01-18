@@ -46,11 +46,15 @@ app.get("/", function (req, res) {
     if (!err) {
       if (allLists.length === 0) {
         res.render("index", { listItems: ["There's no list yet"] });
-    } else {
+      } else {
         res.render("index", { listItems: allLists });
       }
     }
   });
+});
+
+app.get("/about", function (req, res) {
+  res.render("about");
 });
 
 app.get("/:listName", function (req, res) {
@@ -85,14 +89,14 @@ app.post("/", function (req, res) {
       if (justList) {
         List.find({}, function (errAll, allLists) {
           if (!errAll) {
-        res.render("index", {
+            res.render("index", {
               listTitle: newListName,
               listItems: allLists,
-          errorMessage: "This List already exitst",
-  });
+              errorMessage: "This List already exitst",
+            });
           }
         });
-  } else {
+      } else {
         // create new list called newListName
         const list = new List({
           name: newListName,
@@ -100,9 +104,9 @@ app.post("/", function (req, res) {
         });
         await list.save();
         res.redirect("/" + newListName);
-        }
       }
-    });
+    }
+  });
 });
 
 app.post("/:listName", function (req, res) {
@@ -120,7 +124,7 @@ app.post("/:listName", function (req, res) {
       foundList.items.push(item);
       foundList.save();
       res.redirect("/" + foundList.name);
-  }
+    }
   });
 });
 
@@ -128,23 +132,23 @@ app.post("/delete/:listId/:itemId", function (req, res) {
   const checkedItemId = req.params.itemId;
   const currentList = req.params.listId;
 
-    Item.findByIdAndRemove(checkedItemId, function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Succesfully deleted id item " + checkedItemId);
-      }
-    });
+  Item.findByIdAndRemove(checkedItemId, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Succesfully deleted id item " + checkedItemId);
+    }
+  });
 
-    List.findOneAndUpdate(
-      { name: currentList },
-      { $pull: { items: { _id: checkedItemId } } },
-      function (err, foundList) {
-        if (!err) {
-          res.redirect("/" + currentList);
-        }
+  List.findOneAndUpdate(
+    { name: currentList },
+    { $pull: { items: { _id: checkedItemId } } },
+    function (err, foundList) {
+      if (!err) {
+        res.redirect("/" + currentList);
       }
-    );
+    }
+  );
 });
 
 app.post("/delete/:thisIdList", function (req, res) {
