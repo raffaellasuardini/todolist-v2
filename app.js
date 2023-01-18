@@ -105,6 +105,8 @@ app.post("/", function (req, res) {
         }
       }
     });
+});
+
 app.post("/:listName", function (req, res) {
   const itemName = req.body.newItem;
   const listName = req.body.list;
