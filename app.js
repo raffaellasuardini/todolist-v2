@@ -66,13 +66,10 @@ app.get("/:customListName", function (req, res) {
           newListItems: foundList.items,
         });
       } else {
-        // create an new list
-        const list = new List({
-          name: customListName,
-          items: defaultItems,
+        res.status(404).render("404", {
+          listTitle: listName,
+          textError: `List "${listName}" don't exist`,
         });
-        list.save();
-        res.redirect("/" + customListName);
       }
     }
   });
