@@ -11,6 +11,11 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// check if env is setup
+if (!process.env.MONGO) {
+  console.error("Error. Set your env file");
+  process.exit();
+}
 mongoose.connect(process.env.MONGO);
 
 const itemSchema = new mongoose.Schema({
