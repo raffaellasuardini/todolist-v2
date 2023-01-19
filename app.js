@@ -92,7 +92,7 @@ app.post("/", function (req, res) {
             res.render("index", {
               listTitle: newListName,
               listItems: allLists,
-              errorMessage: "This List already exitst",
+              errorMessage: "this List already exitst. ",
             });
           }
         });

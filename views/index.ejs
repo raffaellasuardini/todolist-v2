@@ -1,4 +1,11 @@
-<%- include("header") -%>
+<%- include("header") -%> <% if (typeof errorMessage !== "undefined") { %>
+<div>
+  <p class="errorMessage">
+    List '<%=listTitle%>' not created: <%= errorMessage %>
+    <a href="/<%= listTitle%>">Check it.</a>
+  </p>
+</div>
+<% } %>
 
 <div class="box" id="heading">
   <h1>All List</h1>
@@ -10,15 +17,10 @@
   </div>
   <% } else {%>
   <div class="item">
-    <p><a href="/<%= item.name%>"><%= item.name%></a></p>
+    <a class="itemLink" href="/<%= item.name%>"><%= item.name%></a>
   </div>
   <% }})%>
 </div>
-
-<% if (typeof errorMessage !== "undefined") { %>
-<p>List not created.</p>
-<p><%= errorMessage %></p>
-<% } %>
 
 <div class="box">
   <form class="item" action="/" method="post">
