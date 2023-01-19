@@ -5,7 +5,11 @@
 </div>
 
 <div class="box">
-  <% newListItems.forEach(item => {%>
+  <% if (newListItems.length === 0){%>
+  <div class="item">
+    <p>This list is empty</p>
+  </div>
+  <% } else{ newListItems.forEach(item => {%>
   <form action="/delete/<%= listTitle%>/<%= item._id%>" method="post">
     <div class="item">
       <input
@@ -17,7 +21,7 @@
       <p><%= item.name %></p>
     </div>
   </form>
-  <% }) %>
+  <% }) }%>
 
   <form class="item" action="/<%= listTitle%>" method="post">
     <input
