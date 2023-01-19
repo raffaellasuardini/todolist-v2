@@ -131,6 +131,13 @@ input[type="text"]:focus {
   opacity: 1;
 }
 
+.errorMessage {
+  background-color: #e38386;
+  color: white;
+  border-radius: 5px;
+  max-width: 400%;
+}
+
 footer {
   color: white;
   color: rgba(0, 0, 0, 0.5);
