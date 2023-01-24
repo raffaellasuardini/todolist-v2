@@ -15,7 +15,7 @@ This project is based on an exercise for the course ['The complete web developme
 
 create an env file like this:
 
-`MONGO=link-to-atlas`
+`MONGO=link-to-atlas-and-/namemydb`
 
 install and run project
 
